@@ -12,73 +12,98 @@ export default function BackgroundMusic() {
     audio.loop = true;
     audio.volume = 0.3;
 
-    const tryPlay = () => {
-      console.log('🎵 User interaction detected (scroll/click)!');
-      
-      if (hasPlayed.current) {
-        console.log('⏭️ Music already played, skipping');
-        return;
+    // Check if another tab is already playing
+    const checkOtherTabs = () => {
+      try {
+        const isPlaying = localStorage.getItem('backgroundMusicPlaying');
+        if (isPlaying === 'true') {
+          if (!audio.paused) {
+            audio.pause();
+          }
+          return true;
+        }
+      } catch (e) {
+        // localStorage might not be available
       }
+      return false;
+    };
+
+    // Mark this tab as playing
+    const markAsPlaying = () => {
+      try {
+        localStorage.setItem('backgroundMusicPlaying', 'true');
+      } catch (e) {
+        // localStorage might not be available
+      }
+    };
+
+    // Listen for changes from other tabs
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'backgroundMusicPlaying' && e.newValue === 'true') {
+        if (!audio.paused) {
+          audio.pause();
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    // Check on load if another tab is playing
+    if (checkOtherTabs()) {
+      return () => {
+        window.removeEventListener('storage', handleStorageChange);
+      };
+    }
+
+    const tryPlay = () => {
+      if (hasPlayed.current) return;
+      
+      // Check if another tab is playing
+      if (checkOtherTabs()) return;
       
       const currentAudio = audioRef.current;
-      if (!currentAudio) {
-        console.log('⚠️ Audio element not found');
-        return;
-      }
+      if (!currentAudio) return;
       
-      // If already playing, mark as played and remove listener
+      // If already playing, mark as played
       if (!currentAudio.paused) {
-        console.log('✅ Music already playing');
         hasPlayed.current = true;
+        markAsPlaying();
         removeListeners();
         return;
       }
-      
-      console.log('▶️ Attempting to play music...', {
-        readyState: currentAudio.readyState,
-        paused: currentAudio.paused
-      });
       
       currentAudio.play().then(() => {
-        console.log('✅ Music started successfully!');
         hasPlayed.current = true;
+        markAsPlaying();
         removeListeners();
-      }).catch((err) => {
-        // Don't log NotAllowedError for scroll events
-        if (err.name !== 'NotAllowedError') {
-          console.log('❌ Play failed:', err.name, err.message);
-        }
+      }).catch(() => {
+        // Silently handle errors
       });
     };
 
     const removeListeners = () => {
       const opts = { capture: true };
-      window.removeEventListener('wheel', tryPlay, opts);
-      window.removeEventListener('scroll', tryPlay, opts);
-      document.removeEventListener('wheel', tryPlay, opts);
-      document.removeEventListener('scroll', tryPlay, opts);
       document.removeEventListener('click', tryPlay, opts);
       document.removeEventListener('touchstart', tryPlay, opts);
     };
 
-    // Listen to both scroll and click events
-    // Click events are more reliable for autoplay, but scroll is preferred
-    // Remove passive: true so scroll events count as user gestures
+    // Listen to click events (most reliable for autoplay)
     const options = { capture: true };
-    
-    console.log('🎵 Setting up scroll and click listeners...');
-    
-    // Scroll events (without passive so they count as user gestures)
-    window.addEventListener('wheel', tryPlay, options);
-    window.addEventListener('scroll', tryPlay, options);
-    document.addEventListener('wheel', tryPlay, options);
-    document.addEventListener('scroll', tryPlay, options);
-    
-    // Click events as fallback (these always work for autoplay)
     document.addEventListener('click', tryPlay, options);
     document.addEventListener('touchstart', tryPlay, options);
 
-    return removeListeners;
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      removeListeners();
+      // Clear the flag when component unmounts
+      try {
+        if (hasPlayed.current) {
+          localStorage.removeItem('backgroundMusicPlaying');
+        }
+      } catch (e) {
+        // localStorage might not be available
+      }
+    };
   }, []);
 
   return (
