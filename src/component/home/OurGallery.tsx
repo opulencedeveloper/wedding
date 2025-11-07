@@ -149,22 +149,11 @@ export default function OurGallery() {
           </motion.span>{" "}
         </motion.div>
 
-        {/* Animated Gallery Content */}
-        <motion.div
-          variants={galleryVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          transition={{ 
-            duration: 1.2, 
-            ease: "easeOut",
-            type: "spring",
-            stiffness: 100
-          }}
-          style={{ transformStyle: 'preserve-3d', perspective: '1000px' }}
-        >
+        {/* Animated Gallery Content - Each image animates individually when it comes into view */}
+        <div>
           <OurGalleryDesktop />
           <OurGalleryMobile />
-        </motion.div>
+        </div>
       </motion.div>
     </section>
   );

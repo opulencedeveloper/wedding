@@ -10,7 +10,9 @@ import BrideGroomImage from "@/assets/home/images/bride-groom-1.png";
 
 export default function OurStory() {
   const sectionRef = useRef<HTMLElement>(null);
+  const bottomSectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+  const isBottomInView = useInView(bottomSectionRef, { once: true, margin: '-100px' });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -154,9 +156,10 @@ export default function OurStory() {
         </motion.div>
 
         <motion.div
+          ref={bottomSectionRef}
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
+          animate={isBottomInView ? 'visible' : 'hidden'}
           className="flex flex-col-reverse size1000:flex-row justify-between gap-7.5 text-c136207 font-greatvibes-400"
         >
           <motion.div 

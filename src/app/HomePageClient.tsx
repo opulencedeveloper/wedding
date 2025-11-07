@@ -14,7 +14,7 @@ import StaggerChildren from "@/component/layout/StaggerChildren";
 
 export default function HomePageClient() {
   return (
-    <>
+    <div className='overflow-x-hidden'>
       <HeroSection />
       
       {/* Our Story with automatic animations */}
@@ -59,7 +59,7 @@ export default function HomePageClient() {
       <AnimatedSection direction="fade" delay={0.1}>
         <Footer />
       </AnimatedSection>
-    </>
+    </div>
   );
 }
 

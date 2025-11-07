@@ -2,31 +2,102 @@
 
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 
 import LoveIcon from "@/assets/home/images/love.svg";
 import WhiteWeddingImage from "@/assets/home/images/white-wedding.png";
 import TraditionalMarriageImage from "@/assets/home/images/traditional-marriage.png";
 import ThanksgivingImage from "@/assets/home/images/thanks-giving.png";
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: 30,
+    scale: 0.9,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut" as const,
+    },
+  },
+};
+
+const buttonVariants = {
+  hidden: { 
+    opacity: 0, 
+    scale: 0.8,
+    y: 20,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut" as const,
+    },
+  },
+};
+
 function EventOverlay() {
   const router = useRouter();
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(overlayRef, { once: true, margin: "-100px" });
   
   return (
-    <div className="absolute md:hidden bottom-0 left-0 right-0 flex flex-col justify-center items-center pb-8 md:pb-6">
+    <motion.div 
+      ref={overlayRef}
+      className="absolute bottom-0 left-0 right-0 flex flex-col justify-center items-center pb-8 md:pb-6"
+      variants={containerVariants}
+      initial="hidden"
+      animate={isInView ? 'visible' : 'hidden'}
+    >
       <div className="flex flex-col justify-center items-center max-w-[361px] w-full mx-auto">
-        <p className="text-xl md:text-xl font-nunito-400 leading-none text-white">Saturday</p>
-        <p className="font-greatvibes-400 text-[54.84px] md:text-[54.84px] leading-none mt-0.5 text-white">
+        <motion.p 
+          className="text-xl md:text-xl font-nunito-400 leading-none text-white"
+          variants={itemVariants}
+        >
+          Saturday
+        </motion.p>
+        <motion.p 
+          className="font-greatvibes-400 text-[54.84px] md:text-[54.84px] leading-none mt-0.5 text-white"
+          variants={itemVariants}
+        >
           March 26. 2026
-        </p>
-        <p className="font-greatvibes-400 text-[32.26px] md:text-[32.26px] text-white">Toronnto, Canada</p>
-        <button 
+        </motion.p>
+        <motion.p 
+          className="font-greatvibes-400 text-[32.26px] md:text-[32.26px] text-white"
+          variants={itemVariants}
+        >
+          Toronnto, Canada
+        </motion.p>
+        <motion.button 
           onClick={() => router.push('/registration/guest')}
           className="mt-6.5 flex items-center justify-center h-[59px] w-57 rounded-[50px] border border-white"
+          variants={buttonVariants}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           <span className="text-white font-nunito-400 text-xl">RSVP</span>
-        </button>
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
