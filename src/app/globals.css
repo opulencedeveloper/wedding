@@ -1,26 +1,112 @@
 @import "tailwindcss";
 
+
+@font-face {
+  font-family: "MerriweatherRegular";
+  src: url("/assets/fonts/MerriweatherRegular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NunitoSansRegular";
+  src: url("/assets/fonts/NunitoSansRegular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GreatVibesRegular";
+  src: url("/assets/fonts/GreatVibesRegular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NunitoSansBold";
+  src: url("/assets/fonts/NunitoSansBold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NunitoSansBlack";
+  src: url("/assets/fonts/NunitoSansBlack.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --c136207: #136207;
+  --c1c1c1e: #1C1C1E;
+  --cb0b0b0: #B0B0B0;
+  --c1e1e1e: #1E1E1E;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-c136207: var(--c136207);
+  --color-c1c1c1e: var(--c1c1c1e);
+  --color-cb0b0b0: var(--cb0b0b0);
+  --color-c1e1e1e: var(--c1e1e1e);
+
+  --text-c75: 75px;
+
+  --font-nunito-400: "NunitoSansRegular", "sans-serif";
+  --font-nunito-900: "NunitoSansBlack", "sans-serif";
+  --font-greatvibes-400: "GreatVibesRegular", "sans-serif";
+  --font-merriweather-400: "MerriweatherRegular", "sans-serif";
+  --font-nunito-700: "NunitoSansBold", "sans-serif";
+  --breakpoint-size1000: 1000px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  a,
+  button {
+    @apply cursor-pointer outline-none transition-all duration-300 ease-in-out hover:scale-105;
+  }
+
+  .love-story-rose-right-bg {
+    background-image: url('/assets/images/love-story-rose-right.png'),
+      url('/assets/images/love-story-rose-left.png'),
+      url('/assets/images/love-story-rose-left-bottom.png'),
+      url('/assets/images/love-story-rose-bottrom-right.png');
+    background-repeat: no-repeat;
+    background-position: top -170px right, top -80px left, bottom -48px left -15px, bottom 20px right;
+    /* background-size: 250px, 150px; */
+  }
+
+  .make-hotel-reservation-bg {
+    background-image: url('/assets/images/groom-kissing-bride.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .hero-bg {
+  background-image: url('/assets/images/hero-img.png'),
+                    url('/assets/images/linear-hero-bg.svg');
+  background-repeat: no-repeat, no-repeat;
+  background-position: center center, center;
+  background-size: cover, contain;
+}
+
+@media (max-width: 768px) {
+  .love-story-rose-right-bg {
+    background-position: top 433px right, top 60px left, bottom -25px left -15px, bottom 10px right;
+    background-size: 170px, 100px, 150px, 130px; /* Smaller for mobile */
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+  /* .hero-bg {
+    background-image: url('/assets/images/hero-img.png'),
+      url('/assets/images/linear-hero-bg.svg');
+    background-repeat: center center, no-repeat;
+    background-position: top center, center cover;
+  } */
 }
