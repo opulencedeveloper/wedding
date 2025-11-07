@@ -34,7 +34,7 @@ export default function WeddingEvent() {
   return (
     <section id="event" className="px-5 pb-[66.57px] md:pb-[292.44px] overflow-hidden">
       <div className="max-w-[1233px] w-full mx-auto relative">
-        <div className="flex items-center mb-[46.4px] text-c136207 text-c75 w-max font-greatvibes-400 relative z-10 mx-auto md:mr-0">
+        <div className="flex items-center mb-[46.4px] text-c136207 text-c75 w-max font-greatvibes-400 relative z-10 mx-auto md:ml-0">
           <span className="text-[50px] md:text-c75 mr-6">Event</span>{" "}
           <div className="h-[54.68px] md:h-[79.36px] w-[57.94px] md:w-[84.08px]">
             <Image
