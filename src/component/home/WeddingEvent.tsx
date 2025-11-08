@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 
 import LoveIcon from "@/assets/home/images/love.svg";
 import WhiteWeddingImage from "@/assets/home/images/white-wedding.png";
@@ -58,6 +58,10 @@ const buttonVariants = {
 interface EventOverlayProps {
   token?: string;
   label?: string;
+  isHovered: boolean;
+  isDesktop: boolean;
+  isInView: boolean;
+  index: number;
 }
 
 interface EventImageContainerProps {
@@ -65,11 +69,14 @@ interface EventImageContainerProps {
   alt: string;
   token?: string;
   label: string;
+  index: number;
 }
 
-function EventImageContainer({ image, alt, token, label }: EventImageContainerProps) {
+function EventImageContainer({ image, alt, token, label, index }: EventImageContainerProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(overlayRef, { once: true, margin: "-100px" });
 
   useEffect(() => {
     const checkDesktop = () => {
@@ -102,40 +109,77 @@ function EventImageContainer({ image, alt, token, label }: EventImageContainerPr
         alt={alt}
         className={`h-full w-full object-cover transition-all duration-300 ${isHovered && isDesktop ? 'grayscale' : ''}`}
       />
-      <EventOverlay token={token} isHovered={isHovered && isDesktop} label={label} />
+      <EventOverlay 
+        ref={overlayRef}
+        token={token} 
+        isHovered={isHovered} 
+        isDesktop={isDesktop} 
+        label={label} 
+        isInView={isInView}
+        index={index}
+      />
     </div>
   );
 }
 
-function EventOverlay({ token = 'guest', isHovered, label }: EventOverlayProps & { isHovered: boolean }) {
-  const router = useRouter();
+const EventOverlay = React.forwardRef<HTMLDivElement, EventOverlayProps>(
+  ({ token = 'guest', isHovered, isDesktop, label, isInView, index }, ref) => {
+    const router = useRouter();
+    
+    // On mobile, always show. On desktop, only show on hover
+    const shouldShow = !isDesktop || isHovered;
+    
+    // Different animation variants for each overlay
+    const getMobileAnimation = () => {
+      switch (index) {
+        case 0: // First overlay - slide from left
+          return {
+            initial: { opacity: 0, x: -50, scale: 0.9 },
+            animate: isInView ? { opacity: 1, x: 0, scale: 1 } : { opacity: 0, x: -50, scale: 0.9 }
+          };
+        case 1: // Second overlay - slide from bottom
+          return {
+            initial: { opacity: 0, y: 50, scale: 0.9 },
+            animate: isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 50, scale: 0.9 }
+          };
+        case 2: // Third overlay - fade and scale
+          return {
+            initial: { opacity: 0, scale: 0.8, rotate: -5 },
+            animate: isInView ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.8, rotate: -5 }
+          };
+        default:
+          return {
+            initial: { opacity: 0, scale: 0.95 },
+            animate: isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }
+          };
+      }
+    };
+    
+    const mobileAnimation = getMobileAnimation();
   
-  return (
-    <div className="absolute inset-0 hidden md:flex pointer-events-none">
-      <AnimatePresence>
-        {isHovered && (
-          <>
-            {/* Label at top left */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="absolute top-14.5 left-4.5 pointer-events-auto"
-            >
-              <p className={`font-nunito-700 text-[18.36px] font-bold ${label === 'White wedding' ? 'text-black' : 'text-white'}`}>
-                {label}
-              </p>
-            </motion.div>
-            
-            {/* Content at bottom center */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="absolute bottom-0 left-0 right-0 flex flex-col justify-center items-center pb-8 md:pb-6 pointer-events-auto"
-            >
+  const overlayContent = (
+    <>
+      {/* Label at top left */}
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={isDesktop ? (isHovered ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }) : (isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 })}
+        exit={isDesktop ? { opacity: 0, x: -20 } : undefined}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="absolute top-14.5 left-4.5 pointer-events-auto"
+      >
+        <p className={`font-nunito-700 text-[18.36px] font-bold ${label === 'White wedding' ? 'text-black' : 'text-white'}`}>
+          {label}
+        </p>
+      </motion.div>
+      
+      {/* Content at bottom center */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={isDesktop ? (isHovered ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }) : (isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 })}
+        exit={isDesktop ? { opacity: 0, y: 20 } : undefined}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="absolute bottom-0 left-0 right-0 flex flex-col justify-center items-center pb-8 md:pb-6 pointer-events-auto"
+      >
             <motion.div 
               className="flex flex-col justify-center items-center max-w-[361px] w-full mx-auto"
               variants={containerVariants}
@@ -170,13 +214,31 @@ function EventOverlay({ token = 'guest', isHovered, label }: EventOverlayProps &
                 <span className="text-white font-nunito-400 text-xl">RSVP</span>
               </motion.button>
             </motion.div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </div>
+      </motion.div>
+    </>
   );
-}
+  
+    return (
+      <motion.div 
+        ref={ref}
+        className="absolute inset-0 flex pointer-events-none"
+        initial={!isDesktop ? mobileAnimation.initial : undefined}
+        animate={!isDesktop ? mobileAnimation.animate : undefined}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+      {isDesktop ? (
+        <AnimatePresence>
+          {shouldShow && overlayContent}
+        </AnimatePresence>
+      ) : (
+        overlayContent
+      )}
+    </motion.div>
+    );
+  }
+);
+
+EventOverlay.displayName = 'EventOverlay';
 
 interface WeddingEventProps {
   token?: string;
@@ -205,18 +267,21 @@ export default function WeddingEvent({ token = 'guest' }: WeddingEventProps) {
             alt="White wedding"
             token={token}
             label="White wedding"
+            index={0}
           />
           <EventImageContainer 
             image={TraditionalMarriageImage}
             alt="Traditional marriage"
             token={token}
             label="Traditional wedding"
+            index={1}
           />
           <EventImageContainer 
             image={ThanksgivingImage}
             alt="Thanks giving"
             token={token}
             label="Thanks giving"
+            index={2}
           />
         </div>
       </div>
