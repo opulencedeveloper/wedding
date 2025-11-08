@@ -1,11 +1,17 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import Header from "../layout/Header";
 import FloatingElements from "../layout/FloatingElements";
 import TextReveal from "../layout/TextReveal";
+
+import HeroImageOne from "@/assets/home/images/hero-one.png";
+import HeroImageTwo from "@/assets/home/images/hero-two.png";
+import HeroImageThree from "@/assets/home/images/hero-three.png";
+import HeroImageFour from "@/assets/home/images/hero-four.png";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -71,14 +77,53 @@ export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
 
+  // Background image carousel state
+  const heroImages = [HeroImageOne, HeroImageTwo, HeroImageThree, HeroImageFour];
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
+    }, 3000); // Change image every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
+
   return (
     <motion.section 
       ref={sectionRef}
       id="home" 
-      className="px-5 h-[954px] md:h-240 w-full hero-bg text-white relative overflow-hidden"
+      className="px-5 h-[954px] md:h-240 w-full text-white relative overflow-hidden"
       style={{ y, opacity, scale }}
     >
-      <Header />
+      {/* Background Image Carousel */}
+      <div className="absolute inset-0 z-0">
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={currentImageIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={heroImages[currentImageIndex]}
+              alt={`Hero image ${currentImageIndex + 1}`}
+              fill
+              className="object-cover"
+              priority
+              quality={90}
+            />
+            {/* Overlay for better text readability */}
+            <div className="absolute inset-0 bg-black/30" />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Content Layer - appears on top */}
+      <div className="relative z-10">
+        <Header />
 
       <motion.div
         variants={containerVariants}
@@ -181,6 +226,7 @@ export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
           </motion.button>
         </TextReveal>
       </motion.div>
+      </div>
     </motion.section>
   );
 }

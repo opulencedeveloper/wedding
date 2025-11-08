@@ -10,7 +10,7 @@ export default function BackgroundMusic() {
     if (!audio) return;
 
     audio.loop = true;
-    audio.volume = 0.3;
+    audio.volume = 0.08;
 
     // Clear localStorage flag on mount (page refresh = new session)
     // This ensures music can play after refresh
