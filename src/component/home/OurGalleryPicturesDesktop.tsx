@@ -43,11 +43,11 @@ export default function OurGalleryDesktop() {
   const image4Ref = useRef<HTMLDivElement>(null);
   const image5Ref = useRef<HTMLDivElement>(null);
 
-  const image1InView = useInView(image1Ref, { once: true, margin: '-50px' });
-  const image2InView = useInView(image2Ref, { once: true, margin: '-50px' });
-  const image3InView = useInView(image3Ref, { once: true, margin: '-50px' });
-  const image4InView = useInView(image4Ref, { once: true, margin: '-50px' });
-  const image5InView = useInView(image5Ref, { once: true, margin: '-50px' });
+  const image1InView = useInView(image1Ref, { once: false, margin: '-50px' });
+  const image2InView = useInView(image2Ref, { once: false, margin: '-50px' });
+  const image3InView = useInView(image3Ref, { once: false, margin: '-50px' });
+  const image4InView = useInView(image4Ref, { once: false, margin: '-50px' });
+  const image5InView = useInView(image5Ref, { once: false, margin: '-50px' });
 
   return (  
     <div className="w-full hidden size1000:block">

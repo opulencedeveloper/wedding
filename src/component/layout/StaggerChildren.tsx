@@ -17,7 +17,7 @@ export default function StaggerChildren({
   staggerDelay = 0.1 
 }: StaggerChildrenProps) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const isInView = useInView(ref, { once: false, margin: '-50px' });
 
   const container = {
     hidden: { opacity: 0 },

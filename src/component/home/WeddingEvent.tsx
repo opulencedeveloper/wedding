@@ -76,7 +76,7 @@ function EventImageContainer({ image, alt, token, label, index }: EventImageCont
   const [isHovered, setIsHovered] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(overlayRef, { once: true, margin: "-100px" });
+  const isInView = useInView(overlayRef, { once: false, margin: "-100px" });
 
   useEffect(() => {
     const checkDesktop = () => {
@@ -132,10 +132,10 @@ const EventOverlay = React.forwardRef<HTMLDivElement, EventOverlayProps>(
     // Different animation variants for each overlay
     const getMobileAnimation = () => {
       switch (index) {
-        case 0: // First overlay - slide from left
+        case 0: // First overlay - fade and scale from top
           return {
-            initial: { opacity: 0, x: -50, scale: 0.9 },
-            animate: isInView ? { opacity: 1, x: 0, scale: 1 } : { opacity: 0, x: -50, scale: 0.9 }
+            initial: { opacity: 0, y: -30, scale: 0.9 },
+            animate: isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: -30, scale: 0.9 }
           };
         case 1: // Second overlay - slide from bottom
           return {
@@ -144,8 +144,8 @@ const EventOverlay = React.forwardRef<HTMLDivElement, EventOverlayProps>(
           };
         case 2: // Third overlay - fade and scale
           return {
-            initial: { opacity: 0, scale: 0.8, rotate: -5 },
-            animate: isInView ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.8, rotate: -5 }
+            initial: { opacity: 0, scale: 0.8 },
+            animate: isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }
           };
         default:
           return {
@@ -161,9 +161,9 @@ const EventOverlay = React.forwardRef<HTMLDivElement, EventOverlayProps>(
     <>
       {/* Label at top left */}
       <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={isDesktop ? (isHovered ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }) : (isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 })}
-        exit={isDesktop ? { opacity: 0, x: -20 } : undefined}
+        initial={{ opacity: 0, y: -10 }}
+        animate={isDesktop ? (isHovered ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }) : (isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 })}
+        exit={isDesktop ? { opacity: 0, y: -10 } : undefined}
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="absolute top-14.5 left-4.5 pointer-events-auto"
       >
@@ -172,14 +172,15 @@ const EventOverlay = React.forwardRef<HTMLDivElement, EventOverlayProps>(
         </p>
       </motion.div>
       
-      {/* Content at bottom center */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={isDesktop ? (isHovered ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }) : (isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 })}
-        exit={isDesktop ? { opacity: 0, y: 20 } : undefined}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="absolute bottom-0 left-0 right-0 flex flex-col justify-center items-center pb-8 md:pb-6 pointer-events-auto"
-      >
+      {/* Content at bottom center - only show for first two images */}
+      {index !== 2 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isDesktop ? (isHovered ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }) : (isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 })}
+          exit={isDesktop ? { opacity: 0, y: 20 } : undefined}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col justify-center items-center pb-8 md:pb-6 pointer-events-auto w-full"
+        >
             <motion.div 
               className="flex flex-col justify-center items-center max-w-[361px] w-full mx-auto"
               variants={containerVariants}
@@ -190,13 +191,13 @@ const EventOverlay = React.forwardRef<HTMLDivElement, EventOverlayProps>(
                 className="text-xl md:text-xl font-nunito-400 leading-none text-white"
                 variants={itemVariants}
               >
-                Saturday
+                {index === 0 ? 'Friday' : 'Thursday'}
               </motion.p>
               <motion.p 
                 className="font-greatvibes-400 text-[54.84px] md:text-[54.84px] leading-none mt-0.5 text-white"
                 variants={itemVariants}
               >
-                March 26. 2026
+                {index === 0 ? 'March 27 2026' : 'March 26 2026'}
               </motion.p>
               <motion.p 
                 className="font-greatvibes-400 text-[32.26px] md:text-[32.26px] text-white"
@@ -214,7 +215,8 @@ const EventOverlay = React.forwardRef<HTMLDivElement, EventOverlayProps>(
                 <span className="text-white font-nunito-400 text-xl">RSVP</span>
               </motion.button>
             </motion.div>
-      </motion.div>
+        </motion.div>
+      )}
     </>
   );
   
@@ -222,8 +224,8 @@ const EventOverlay = React.forwardRef<HTMLDivElement, EventOverlayProps>(
       <motion.div 
         ref={ref}
         className="absolute inset-0 flex pointer-events-none"
-        initial={!isDesktop ? mobileAnimation.initial : undefined}
-        animate={!isDesktop ? mobileAnimation.animate : undefined}
+        initial={!isDesktop ? mobileAnimation.initial : { opacity: 1 }}
+        animate={!isDesktop ? mobileAnimation.animate : { opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
       {isDesktop ? (

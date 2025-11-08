@@ -178,7 +178,7 @@ export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
             transition={{ duration: 0.6, ease: "easeOut" }}
             whileHover={{ scale: 1.1, y: -5 }}
           >
-            Saturday
+            Friday 
           </motion.p>
         </TextReveal>
         
@@ -189,7 +189,8 @@ export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
             transition={{ duration: 0.6, ease: "easeOut" }}
             whileHover={{ scale: 1.1, rotateZ: 2 }}
           >
-           March 26. 2026
+        March 27 2026
+
           </motion.p>
         </TextReveal>
         

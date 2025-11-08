@@ -11,8 +11,8 @@ import OurGalleryMobile from "./OurGalleryPicturesMobile";
 export default function OurGallery() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
-  const titleInView = useInView(titleRef, { once: true, margin: '-50px' });
+  const isInView = useInView(sectionRef, { once: false, margin: '-100px' });
+  const titleInView = useInView(titleRef, { once: false, margin: '-50px' });
 
   // Parallax effect for gallery content
   const { scrollYProgress } = useScroll({

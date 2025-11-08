@@ -47,7 +47,7 @@ function HomePageContent({ token = 'guest' }: HomePageClientProps) {
         <motion.div
           initial={{ opacity: 0, rotateX: 15, scale: 0.9 }}
           whileInView={{ opacity: 1, rotateX: 0, scale: 1 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: false, margin: '-100px' }}
           transition={{ 
             duration: 1.2, 
             ease: "easeOut",

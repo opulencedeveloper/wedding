@@ -20,7 +20,7 @@ export default function AnimatedSection({
   duration = 0.6,
 }: AnimatedSectionProps) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: false, margin: '-100px' });
 
   const getInitialPosition = () => {
     switch (direction) {

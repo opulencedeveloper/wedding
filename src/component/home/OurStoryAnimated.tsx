@@ -11,7 +11,7 @@ import BrideGroomImage from "@/assets/home/images/bride-groom-1.png";
 export default function OurStoryAnimated() {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+  const isInView = useInView(sectionRef, { once: false, margin: '-100px' });
 
   // Parallax effect for content (not affecting background)
   const { scrollYProgress } = useScroll({
