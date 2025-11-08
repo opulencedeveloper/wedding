@@ -118,6 +118,28 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Preload critical fonts for faster loading */}
+        <link
+          rel="preload"
+          href="/assets/fonts/GreatVibesRegular.ttf"
+          as="font"
+          type="font/ttf"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/assets/fonts/NunitoSansRegular.ttf"
+          as="font"
+          type="font/ttf"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/assets/fonts/NunitoSansBold.ttf"
+          as="font"
+          type="font/ttf"
+          crossOrigin="anonymous"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

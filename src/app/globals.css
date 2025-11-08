@@ -6,6 +6,7 @@
   src: url("/assets/fonts/MerriweatherRegular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -13,6 +14,7 @@
   src: url("/assets/fonts/NunitoSansRegular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -20,6 +22,7 @@
   src: url("/assets/fonts/GreatVibesRegular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -27,6 +30,7 @@
   src: url("/assets/fonts/NunitoSansBold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -34,6 +38,7 @@
   src: url("/assets/fonts/NunitoSansBlack.ttf") format("truetype");
   font-weight: 900;
   font-style: normal;
+  font-display: swap;
 }
 
 :root {
