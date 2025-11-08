@@ -2,7 +2,11 @@
 
 import { useRouter } from 'next/navigation';
 
-export default function Footer() {
+interface FooterProps {
+  token?: string;
+}
+
+export default function Footer({ token = 'guest' }: FooterProps) {
   const router = useRouter();
   
   return (
@@ -65,7 +69,7 @@ export default function Footer() {
 
           {/* RSVP Button - slightly darker than card, thin white border */}
           <button 
-            onClick={() => router.push('/registration/guest')}
+            onClick={() => router.push(`/registration/${token}`)}
             className="px-[46px] mx-auto h-[49px] md:h-[60px] rounded-[50px] border border-white/90 bg-black/10 hover:bg-black/50 transition-all duration-300"
           >
             <span className="text-white font-nunito-700 text-lg md:text-[25px] uppercase tracking-wide">

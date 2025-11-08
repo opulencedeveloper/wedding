@@ -12,10 +12,15 @@ import AnimatedSection from "@/component/layout/AnimatedSection";
 import ParallaxSection from "@/component/layout/ParallaxSection";
 import StaggerChildren from "@/component/layout/StaggerChildren";
 
-export default function HomePageClient() {
+interface HomePageClientProps {
+  token?: string;
+}
+
+function HomePageContent({ token = 'guest' }: HomePageClientProps) {
+
   return (
     <div className='overflow-x-hidden'>
-      <HeroSection />
+      <HeroSection token={token} />
       
       {/* Our Story with automatic animations */}
       <OurStory />
@@ -51,15 +56,19 @@ export default function HomePageClient() {
           }}
           style={{ transformStyle: 'preserve-3d', perspective: '1000px' }}
         >
-          <WeddingEvent />
+          <WeddingEvent token={token} />
         </motion.div>
       </AnimatedSection>
 
       {/* Footer with Fade */}
       <AnimatedSection direction="fade" delay={0.1}>
-        <Footer />
+        <Footer token={token} />
       </AnimatedSection>
     </div>
   );
+}
+
+export default function HomePageClient({ token = 'guest' }: HomePageClientProps) {
+  return <HomePageContent token={token} />;
 }
 

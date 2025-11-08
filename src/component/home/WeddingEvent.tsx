@@ -55,7 +55,11 @@ const buttonVariants = {
   },
 };
 
-function EventOverlay() {
+interface EventOverlayProps {
+  token?: string;
+}
+
+function EventOverlay({ token = 'guest' }: EventOverlayProps) {
   const router = useRouter();
   const overlayRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(overlayRef, { once: true, margin: "-100px" });
@@ -88,7 +92,7 @@ function EventOverlay() {
           Toronnto, Canada
         </motion.p>
         <motion.button 
-          onClick={() => router.push('/registration/guest')}
+          onClick={() => router.push(`/registration/${token}`)}
           className="mt-6.5 flex items-center justify-center h-[59px] w-57 rounded-[50px] border border-white"
           variants={buttonVariants}
           whileHover={{ scale: 1.05 }}
@@ -101,7 +105,11 @@ function EventOverlay() {
   );
 }
 
-export default function WeddingEvent() {
+interface WeddingEventProps {
+  token?: string;
+}
+
+export default function WeddingEvent({ token = 'guest' }: WeddingEventProps) {
   return (
     <section id="event" className="px-5 pb-[66.57px] md:pb-[292.44px] overflow-hidden">
       <div className="max-w-[1233px] w-full mx-auto relative">
@@ -125,7 +133,7 @@ export default function WeddingEvent() {
               alt="White weding"
               className="h-full w-full object-cover"
             />
-            <EventOverlay />
+            <EventOverlay token={token} />
           </div>
           <div className="w-full h-[583.53] md:h-[572px] rounded-[10px] overflow-hidden relative">
             <Image
@@ -133,7 +141,7 @@ export default function WeddingEvent() {
               alt="Traditional marriage"
               className="h-full w-full object-cover"
             />
-            <EventOverlay />
+            <EventOverlay token={token} />
           </div>
           <div className="w-full h-[583.53] md:h-[572px] rounded-[10px] overflow-hidden relative">
             <Image
@@ -141,7 +149,7 @@ export default function WeddingEvent() {
               alt="Thanks giving"
               className="h-full w-full object-cover"
             />
-            <EventOverlay />
+            <EventOverlay token={token} />
           </div>
         </div>
       </div>

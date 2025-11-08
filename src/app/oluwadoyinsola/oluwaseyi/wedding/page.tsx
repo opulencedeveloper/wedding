@@ -31,27 +31,19 @@ export default function VerifyPage() {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<'pending' | 'accepted'>('pending');
 
-  // Normalize link to ensure it's in the path format
+  // Normalize link to point to home page with token as dynamic path
   const normalizeLink = (link: string, token: string): string => {
     try {
       const url = new URL(link);
-      // If it's using query parameters, convert to path format
-      if (url.searchParams.has('token')) {
-        return `${url.origin}/registration/${token}`;
-      }
-      // If it's already in path format, return as is
-      if (url.pathname.startsWith('/registration/')) {
-        return link;
-      }
-      // Fallback: construct the path format
-      return `${url.origin}/registration/${token}`;
+      // Always construct invitation link with token as dynamic path
+      return `${url.origin}/invitation/${token}`;
     } catch {
       // If URL parsing fails, construct from token
       if (typeof window !== 'undefined') {
-        return `${window.location.origin}/registration/${token}`;
+        return `${window.location.origin}/invitation/${token}`;
       }
       // Server-side fallback
-      return `/registration/${token}`;
+      return `/invitation/${token}`;
     }
   };
 
@@ -118,7 +110,7 @@ export default function VerifyPage() {
           submitted: data.submitted || false,
           createdAt: data.createdAt || new Date().toISOString(),
           updatedAt: data.updatedAt || new Date().toISOString(),
-          link: normalizeLink(data.link || `${window.location.origin}/registration/${data.token}`, data.token),
+          link: normalizeLink(data.link || `${window.location.origin}/invitation/${data.token}`, data.token),
           fullName: data.fullName || '',
           title: data.title || '',
           office: data.office || '',

@@ -55,7 +55,11 @@ const buttonVariants = {
   },
 };
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  token?: string;
+}
+
+export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
   const router = useRouter();
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -157,7 +161,7 @@ export default function HeroSection() {
 
         <TextReveal delay={0.6}>
           <motion.button 
-            onClick={() => router.push('/registration/guest')}
+            onClick={() => router.push(`/registration/${token}`)}
             className="mt-6.5 flex items-center justify-center h-[59px] w-57 rounded-[50px] border border-white hover:bg-white/10 transition-colors duration-300"
             variants={buttonVariants}
             transition={{ duration: 0.5, ease: "easeOut" }}
