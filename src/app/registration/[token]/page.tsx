@@ -500,7 +500,8 @@ function RegistrationForm() {
                 </button>
                 <button
                   type="button"
-                  className="w-full bg-transparent text-cb0b0b0 font-nunito-400 py-4 rounded-[100px]"
+                  onClick={() => router.push('/')}
+                  className="w-full bg-transparent text-cb0b0b0 font-nunito-400 py-4 rounded-[100px] hover:text-c136207 transition-colors"
                 >
                   Cancel
                 </button>
