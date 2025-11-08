@@ -75,14 +75,13 @@ export default function EntranceOverlay() {
 
   const handleClick = () => {
     setIsVisible(false);
-    // Signal that overlay has been dismissed
+    // Save to localStorage immediately
     try {
       localStorage.setItem('entranceOverlayDismissed', 'true');
-      // Dispatch custom event for immediate response
-      window.dispatchEvent(new CustomEvent('entranceOverlayDismissed'));
     } catch (e) {
       // localStorage might not be available
     }
+    // Note: Event will be dispatched after exit animation completes via onExitComplete
   };
 
   const overlayVariants = {
@@ -138,7 +137,10 @@ export default function EntranceOverlay() {
   };
 
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={() => {
+      // Dispatch event only after overlay has completely exited the screen
+      window.dispatchEvent(new CustomEvent('entranceOverlayDismissed'));
+    }}>
       {isVisible && (
         <motion.div
           initial="visible"

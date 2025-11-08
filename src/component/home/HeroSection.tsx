@@ -145,10 +145,14 @@ export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
       <div className="relative z-10">
         <Header />
 
+      <AnimatePresence>
+      {overlayDismissed && (
       <motion.div
+        key="names-section"
         variants={containerVariants}
         initial="hidden"
-        animate={overlayDismissed ? "visible" : "hidden"}
+        animate="visible"
+        exit="hidden"
         className="max-w-[383px] md:max-w-232 w-full mx-auto pt-84 md:pt-56"
       >
         <FloatingElements>
@@ -178,12 +182,18 @@ export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
           </motion.div>
         </FloatingElements>
       </motion.div>
+      )}
+      </AnimatePresence>
 
+      <AnimatePresence>
+      {overlayDismissed && (
       <motion.div 
+        key="date-section"
         className="flex flex-col justify-center mt-[53px] md:mt-3 items-center max-w-[361px] w-full mx-auto"
         variants={containerVariants}
         initial="hidden"
-        animate={overlayDismissed ? "visible" : "hidden"}
+        animate="visible"
+        exit="hidden"
       >
         <motion.p 
           className="text-xl md:text-xl font-nunito-400 leading-none"
@@ -232,6 +242,8 @@ export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
           </motion.span>
         </motion.button>
       </motion.div>
+      )}
+      </AnimatePresence>
       </div>
     </motion.section>
   );
