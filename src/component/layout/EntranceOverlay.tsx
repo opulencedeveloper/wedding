@@ -75,6 +75,14 @@ export default function EntranceOverlay() {
 
   const handleClick = () => {
     setIsVisible(false);
+    // Signal that overlay has been dismissed
+    try {
+      localStorage.setItem('entranceOverlayDismissed', 'true');
+      // Dispatch custom event for immediate response
+      window.dispatchEvent(new CustomEvent('entranceOverlayDismissed'));
+    } catch (e) {
+      // localStorage might not be available
+    }
   };
 
   const overlayVariants = {

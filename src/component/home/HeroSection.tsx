@@ -80,6 +80,27 @@ export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
   // Background image carousel state
   const heroImages = [HeroImageOne, HeroImageTwo, HeroImageThree, HeroImageFour];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [overlayDismissed, setOverlayDismissed] = useState(false);
+
+  // Check if overlay was already dismissed
+  useEffect(() => {
+    try {
+      const dismissed = localStorage.getItem('entranceOverlayDismissed');
+      if (dismissed === 'true') {
+        setOverlayDismissed(true);
+      }
+    } catch (e) {
+      // localStorage might not be available
+    }
+
+    // Listen for overlay dismissal event
+    const handleDismissed = () => {
+      setOverlayDismissed(true);
+    };
+
+    window.addEventListener('entranceOverlayDismissed', handleDismissed);
+    return () => window.removeEventListener('entranceOverlayDismissed', handleDismissed);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -94,7 +115,7 @@ export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
       ref={sectionRef}
       id="home" 
       className="px-5 h-[954px] md:h-240 w-full text-white relative overflow-hidden"
-      style={{ y, opacity, scale }}
+      style={{ y, opacity, scale, position: 'relative' }}
     >
       {/* Background Image Carousel */}
       <div className="absolute inset-0 z-0">
@@ -169,7 +190,7 @@ export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
         className="flex flex-col justify-center mt-[53px] md:mt-3 items-center max-w-[361px] w-full mx-auto"
         variants={containerVariants}
         initial="hidden"
-        animate="visible"
+        animate={overlayDismissed ? "visible" : "hidden"}
       >
         <TextReveal delay={0.3}>
           <motion.p 
