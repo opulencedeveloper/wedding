@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { randomBytes } from 'crypto';
 import connectDB from '@/lib/mongodb';
 import Registration from '@/models/Registration';
+import { sendInvitationEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
@@ -27,10 +28,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate unique token
+    // Generate unique token first (needed for invitation link)
     const token = randomBytes(32).toString('hex');
 
-    // Create new document with empty strings
+    // Get base URL from request
+    const origin = request.nextUrl.origin;
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || origin;
+    const invitationLink = `${baseUrl}/registration/${token}`;
+
+    // Send invitation email FIRST - only proceed if email succeeds
+    try {
+      await sendInvitationEmail(email, invitationLink, baseUrl);
+    } catch (emailError) {
+      console.error('Failed to send invitation email:', emailError);
+      // If email fails, don't create the document
+      return NextResponse.json(
+        { error: 'Failed to send invitation email. Please try again later.' },
+        { status: 500 }
+      );
+    }
+
+    // Only create document if email was sent successfully
     const newRegistration = new Registration({
       email,
       token,
@@ -44,10 +62,6 @@ export async function POST(request: NextRequest) {
 
     await newRegistration.save();
 
-    // Get base URL from request
-    const origin = request.nextUrl.origin;
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || origin;
-
     // Return the full registration object
     return NextResponse.json({
       email: newRegistration.email,
@@ -55,7 +69,7 @@ export async function POST(request: NextRequest) {
       submitted: newRegistration.submitted,
       createdAt: newRegistration.createdAt,
       updatedAt: newRegistration.updatedAt,
-      link: `${baseUrl}/registration/${newRegistration.token}`,
+      link: invitationLink,
       fullName: newRegistration.fullName || '',
       title: newRegistration.title || '',
       office: newRegistration.office || '',

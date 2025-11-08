@@ -102,7 +102,7 @@
 
 @media (max-width: 768px) {
   .love-story-rose-right-bg {
-    background-position: top 513px right, top 60px left, bottom -25px left -15px, bottom 10px right;
+    background-position: top 583px right, top 60px left, bottom -25px left -15px, bottom 10px right;
     background-size: 170px, 100px, 150px, 130px; /* Smaller for mobile */
   }
 }
