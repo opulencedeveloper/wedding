@@ -57,15 +57,17 @@ const buttonVariants = {
 
 interface EventOverlayProps {
   token?: string;
+  label?: string;
 }
 
 interface EventImageContainerProps {
   image: any;
   alt: string;
   token?: string;
+  label: string;
 }
 
-function EventImageContainer({ image, alt, token }: EventImageContainerProps) {
+function EventImageContainer({ image, alt, token, label }: EventImageContainerProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
 
@@ -100,25 +102,40 @@ function EventImageContainer({ image, alt, token }: EventImageContainerProps) {
         alt={alt}
         className={`h-full w-full object-cover transition-all duration-300 ${isHovered && isDesktop ? 'grayscale' : ''}`}
       />
-      <EventOverlay token={token} isHovered={isHovered && isDesktop} />
+      <EventOverlay token={token} isHovered={isHovered && isDesktop} label={label} />
     </div>
   );
 }
 
-function EventOverlay({ token = 'guest', isHovered }: EventOverlayProps & { isHovered: boolean }) {
+function EventOverlay({ token = 'guest', isHovered, label }: EventOverlayProps & { isHovered: boolean }) {
   const router = useRouter();
   
   return (
-    <div className="absolute bottom-0 left-0 right-0 hidden md:flex flex-col justify-center items-center pb-8 md:pb-6 pointer-events-none">
+    <div className="absolute inset-0 hidden md:flex pointer-events-none">
       <AnimatePresence>
         {isHovered && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="pointer-events-auto"
-          >
+          <>
+            {/* Label at top left */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="absolute top-14.5 left-4.5 pointer-events-auto"
+            >
+              <p className={`font-nunito-700 text-[18.36px] font-bold ${label === 'White wedding' ? 'text-black' : 'text-white'}`}>
+                {label}
+              </p>
+            </motion.div>
+            
+            {/* Content at bottom center */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="absolute bottom-0 left-0 right-0 flex flex-col justify-center items-center pb-8 md:pb-6 pointer-events-auto"
+            >
             <motion.div 
               className="flex flex-col justify-center items-center max-w-[361px] w-full mx-auto"
               variants={containerVariants}
@@ -153,7 +170,8 @@ function EventOverlay({ token = 'guest', isHovered }: EventOverlayProps & { isHo
                 <span className="text-white font-nunito-400 text-xl">RSVP</span>
               </motion.button>
             </motion.div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </div>
@@ -186,16 +204,19 @@ export default function WeddingEvent({ token = 'guest' }: WeddingEventProps) {
             image={WhiteWeddingImage}
             alt="White wedding"
             token={token}
+            label="White wedding"
           />
           <EventImageContainer 
             image={TraditionalMarriageImage}
             alt="Traditional marriage"
             token={token}
+            label="Traditional wedding"
           />
           <EventImageContainer 
             image={ThanksgivingImage}
             alt="Thanks giving"
             token={token}
+            label="Thanks giving"
           />
         </div>
       </div>
