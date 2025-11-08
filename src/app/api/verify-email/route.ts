@@ -31,10 +31,13 @@ export async function POST(request: NextRequest) {
     // Generate unique token first (needed for invitation link)
     const token = randomBytes(32).toString('hex');
 
-    // Get base URL from request
+    // Get base URL from request and ensure it's properly formatted
     const origin = request.nextUrl.origin;
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || origin;
-    const invitationLink = `${baseUrl}/registration/${token}`;
+    let baseUrl = process.env.NEXT_PUBLIC_BASE_URL || origin;
+    // Remove trailing slash if present
+    baseUrl = baseUrl.replace(/\/$/, '');
+    // Ensure the invitation link points to the registration page
+    const invitationLink = `${baseUrl}/invitation/${token}`;
 
     // Send invitation email FIRST - only proceed if email succeeds
     try {
