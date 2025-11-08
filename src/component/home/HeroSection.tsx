@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Header from "../layout/Header";
 import FloatingElements from "../layout/FloatingElements";
-import TextReveal from "../layout/TextReveal";
 
 import HeroImageOne from "@/assets/home/images/hero-one.png";
 import HeroImageTwo from "@/assets/home/images/hero-two.png";
@@ -149,7 +148,7 @@ export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
       <motion.div
         variants={containerVariants}
         initial="hidden"
-        animate="visible"
+        animate={overlayDismissed ? "visible" : "hidden"}
         className="max-w-[383px] md:max-w-232 w-full mx-auto pt-84 md:pt-56"
       >
         <FloatingElements>
@@ -159,9 +158,7 @@ export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
             transition={{ duration: 0.8, ease: "easeOut" }}
             whileHover={{ scale: 1.05, rotateZ: 1 }}
           >
-            <TextReveal delay={0}>
-              <h1 className="leading-none"> Oluwadoyinsolami</h1>
-            </TextReveal>
+            <h1 className="leading-none"> Oluwadoyinsolami</h1>
           </motion.div>
         </FloatingElements>
         
@@ -172,16 +169,12 @@ export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
             whileHover={{ scale: 1.05, rotateZ: -1 }}
           >
-            <TextReveal delay={0.1}>
-              <p className="text-white font-nunito-400 text-xl md:text-[37.69px] leading-none mt-1.5 md:mt-0 mr-2 md:mr-0">
-                And
-              </p>
-            </TextReveal>
-            <TextReveal delay={0.2}>
-              <h2 className="font-greatvibes-400 text-[40px] md:text-[113.06px] leading-none">
-                Oluwaseyi
-              </h2>
-            </TextReveal>
+            <p className="text-white font-nunito-400 text-xl md:text-[37.69px] leading-none mt-1.5 md:mt-0 mr-2 md:mr-0">
+              And
+            </p>
+            <h2 className="font-greatvibes-400 text-[40px] md:text-[113.06px] leading-none">
+              Oluwaseyi
+            </h2>
           </motion.div>
         </FloatingElements>
       </motion.div>
@@ -192,61 +185,52 @@ export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
         initial="hidden"
         animate={overlayDismissed ? "visible" : "hidden"}
       >
-        <TextReveal delay={0.3}>
-          <motion.p 
-            className="text-xl md:text-xl font-nunito-400 leading-none"
-            variants={dateVariants}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            whileHover={{ scale: 1.1, y: -5 }}
-          >
-            Friday 
-          </motion.p>
-        </TextReveal>
+        <motion.p 
+          className="text-xl md:text-xl font-nunito-400 leading-none"
+          variants={dateVariants}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+          whileHover={{ scale: 1.1, y: -5 }}
+        >
+          Friday 
+        </motion.p>
         
-        <TextReveal delay={0.4}>
-          <motion.p 
-            className="font-greatvibes-400 text-[54.84px] md:text-[54.84px] leading-none mt-0.5"
-            variants={dateVariants}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            whileHover={{ scale: 1.1, rotateZ: 2 }}
-          >
-        March 27 2026
-
-          </motion.p>
-        </TextReveal>
+        <motion.p 
+          className="font-greatvibes-400 text-[54.84px] md:text-[54.84px] leading-none mt-0.5"
+          variants={dateVariants}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+          whileHover={{ scale: 1.1, rotateZ: 2 }}
+        >
+          March 27 2026
+        </motion.p>
         
-        <TextReveal delay={0.5}>
-          <motion.p 
-            className="font-greatvibes-400 text-[32.26px] md:text-[32.26px]"
-            variants={dateVariants}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            whileHover={{ scale: 1.1, y: -5 }}
-          >
-            Toronnto, Canada
-          </motion.p>
-        </TextReveal>
+        <motion.p 
+          className="font-greatvibes-400 text-[32.26px] md:text-[32.26px]"
+          variants={dateVariants}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
+          whileHover={{ scale: 1.1, y: -5 }}
+        >
+          Toronnto, Canada
+        </motion.p>
 
-        <TextReveal delay={0.6}>
-          <motion.button 
-            onClick={() => router.push(`/registration/${token}`)}
-            className="mt-6.5 flex items-center justify-center h-[59px] w-57 rounded-[50px] border border-white hover:bg-white/10 transition-colors duration-300"
-            variants={buttonVariants}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            whileHover={{ 
-              scale: 1.1, 
-              rotateZ: 2,
-              boxShadow: "0 0 30px rgba(255, 255, 255, 0.5)",
-            }}
-            whileTap={{ scale: 0.95, rotateZ: -2 }}
+        <motion.button 
+          onClick={() => router.push(`/registration/${token}`)}
+          className="mt-6.5 flex items-center justify-center h-[59px] w-57 rounded-[50px] border border-white hover:bg-white/10 transition-colors duration-300"
+          variants={buttonVariants}
+          transition={{ duration: 0.5, ease: "easeOut", delay: 0.6 }}
+          whileHover={{ 
+            scale: 1.1, 
+            rotateZ: 2,
+            boxShadow: "0 0 30px rgba(255, 255, 255, 0.5)",
+          }}
+          whileTap={{ scale: 0.95, rotateZ: -2 }}
+        >
+          <motion.span 
+            className="text-white font-nunito-400 text-xl"
+            whileHover={{ x: 5 }}
           >
-            <motion.span 
-              className="text-white font-nunito-400 text-xl"
-              whileHover={{ x: 5 }}
-            >
-              RSVP
-            </motion.span>
-          </motion.button>
-        </TextReveal>
+            RSVP
+          </motion.span>
+        </motion.button>
       </motion.div>
       </div>
     </motion.section>
