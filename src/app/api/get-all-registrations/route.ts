@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
 
     const registrations = await Registration.find({})
       .sort({ createdAt: -1 })
-      .select('email token submitted createdAt updatedAt fullName title office country numberOfChildren')
+      .select('email token submitted createdAt updatedAt fullName title office country numberOfChildren date day')
       .lean();
 
     // Get base URL from request
@@ -28,6 +28,8 @@ export async function GET(request: NextRequest) {
         office: reg.office || '',
         country: reg.country || '',
         numberOfChildren: reg.numberOfChildren || '',
+        date: reg.date || '',
+        day: reg.day || '',
       })),
     });
 

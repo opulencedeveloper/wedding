@@ -4,7 +4,9 @@ import { getInvitationEmailTemplate } from './email-template';
 export async function sendInvitationEmail(
   to: string,
   invitationLink: string,
-  baseUrl: string
+  baseUrl: string,
+  date?: string,
+  day?: string
 ): Promise<void> {
   // Gmail SMTP configuration - requires App Password
   // Get Gmail credentials from environment variables
@@ -40,7 +42,7 @@ export async function sendInvitationEmail(
   });
 
   // Generate email HTML
-  const htmlContent = getInvitationEmailTemplate(invitationLink, baseUrl);
+  const htmlContent = getInvitationEmailTemplate(invitationLink, baseUrl, undefined, date, day);
 
   // Email options
   const mailOptions = {

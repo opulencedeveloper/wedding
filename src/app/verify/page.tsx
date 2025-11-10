@@ -19,6 +19,8 @@ interface Registration {
   office: string;
   country: string;
   numberOfChildren: string;
+  date: string;
+  day: string;
 }
 
 export default function VerifyPage() {
@@ -124,6 +126,8 @@ export default function VerifyPage() {
           office: data.office || '',
           country: data.country || '',
           numberOfChildren: data.numberOfChildren || '',
+          date: data.date || '',
+          day: data.day || '',
         };
         
         // Add to the beginning of the list
@@ -460,6 +464,18 @@ export default function VerifyPage() {
                               <div className="flex flex-col">
                                 <span className="text-cb0b0b0 font-nunito-400 text-sm mb-1.5">Number of Children</span>
                                 <span className="text-c136207 font-nunito-600 text-base">{reg.numberOfChildren}</span>
+                              </div>
+                            )}
+                            {reg.day && (
+                              <div className="flex flex-col">
+                                <span className="text-cb0b0b0 font-nunito-400 text-sm mb-1.5">Day</span>
+                                <span className="text-c136207 font-nunito-600 text-base">{reg.day}</span>
+                              </div>
+                            )}
+                            {reg.date && (
+                              <div className="flex flex-col">
+                                <span className="text-cb0b0b0 font-nunito-400 text-sm mb-1.5">Wedding Attendance Date</span>
+                                <span className="text-c136207 font-nunito-600 text-base">{reg.date}</span>
                               </div>
                             )}
                           </div>

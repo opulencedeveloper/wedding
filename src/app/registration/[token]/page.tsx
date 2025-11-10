@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, Suspense } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from "next/image";
 
@@ -97,7 +97,12 @@ function AnimatedDropdown({ label, options, value, onChange, placeholder }: Anim
 function RegistrationForm() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const token = params?.token as string;
+  
+  // Get date and day from query parameters, with fallback to default values
+  const dateParam = searchParams.get('date') || 'March 27 2026';
+  const dayParam = searchParams.get('day') || 'Friday';
 
   const [fullName, setFullName] = useState('');
   const [title, setTitle] = useState('');
@@ -114,7 +119,7 @@ function RegistrationForm() {
   const [isGuestToken, setIsGuestToken] = useState(false);
 
   const titleOptions = ['Mr', 'Mrs.', 'Pastor', 'Deaconess', 'Deacon', 'Sister', 'Brother'];
-  const officeOptions = ['Zonal Pastor', 'Group Pastor', 'Deacon', 'Deaconess', 'Pastor', 'SOM', 'Other'];
+  const officeOptions = ['Zonal Pastor', 'Group Pastor', 'Deacon', 'Deaconess', 'Pastor', 'SOM', "Groom Family", "Bride Family", 'Other'];
   const childrenOptions = ['0', '1', '2', '3', '4'];
 
   // Fetch registration data if token exists
@@ -205,6 +210,8 @@ function RegistrationForm() {
           office,
           country,
           numberOfChildren,
+          date: dateParam,
+          day: dayParam,
         }),
       });
 
@@ -246,10 +253,10 @@ function RegistrationForm() {
             </h1>
             
             <p className="text-white font-nunito-400 leading-0 mt-2.5 text-lg md:text-xl">
-              Saturday
+              {dayParam}
             </p>
             <p className="text-white font-greatvibes-400 text-[40px] md:text-[54.84px] mb-3 leading-tight">
-              October 12. 2025
+             {dateParam}
             </p>
             
             <p className="text-white leading-0 mt-1 font-greatvibes-400 text-3xl">

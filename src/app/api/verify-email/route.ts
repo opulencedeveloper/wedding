@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   try {
     await connectDB();
 
-    const { email } = await request.json();
+    const { email, date, day } = await request.json();
 
     if (!email || !email.includes('@')) {
       return NextResponse.json(
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
 
     // Send invitation email FIRST - only proceed if email succeeds
     try {
-      await sendInvitationEmail(email, invitationLink, baseUrl);
+      await sendInvitationEmail(email, invitationLink, baseUrl, date, day);
     } catch (emailError) {
       console.error('Failed to send invitation email:', emailError);
       // If email fails, don't create the document
@@ -60,6 +60,8 @@ export async function POST(request: NextRequest) {
       office: '',
       country: '',
       numberOfChildren: '',
+      date: date || '',
+      day: day || '',
       submitted: false,
     });
 
@@ -78,6 +80,8 @@ export async function POST(request: NextRequest) {
       office: newRegistration.office || '',
       country: newRegistration.country || '',
       numberOfChildren: newRegistration.numberOfChildren || '',
+      date: newRegistration.date || '',
+      day: newRegistration.day || '',
       exists: false,
     });
   } catch (error: any) {

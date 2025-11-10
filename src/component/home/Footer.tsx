@@ -167,7 +167,11 @@ export default function Footer({ token = 'guest' }: FooterProps) {
 
           {/* RSVP Button - slightly darker than card, thin white border */}
           <motion.button 
-            onClick={() => router.push(`/registration/${token}`)}
+            onClick={() => {
+              const date = 'March 27 2026';
+              const day = 'Friday';
+              router.push(`/registration/${token}?date=${encodeURIComponent(date)}&day=${encodeURIComponent(day)}`);
+            }}
             className="px-[46px] mx-auto h-[49px] md:h-[60px] rounded-[50px] border border-white/90 bg-black/10 hover:bg-black/50 transition-all duration-300"
             variants={buttonVariants}
             whileHover={{ 

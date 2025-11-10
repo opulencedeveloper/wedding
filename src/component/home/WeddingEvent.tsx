@@ -134,13 +134,13 @@ const EventOverlay = React.forwardRef<HTMLDivElement, EventOverlayProps>(
       switch (index) {
         case 0: // First overlay - fade and scale from top
           return {
-            initial: { opacity: 0, y: -30, scale: 0.9 },
-            animate: isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: -30, scale: 0.9 }
+            initial: { opacity: 0, scale: 0.9 },
+            animate: isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }
           };
-        case 1: // Second overlay - slide from bottom
+        case 1: // Second overlay - fade and scale (same as first for consistent positioning)
           return {
-            initial: { opacity: 0, y: 50, scale: 0.9 },
-            animate: isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 50, scale: 0.9 }
+            initial: { opacity: 0, scale: 0.9 },
+            animate: isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }
           };
         case 2: // Third overlay - fade and scale
           return {
@@ -206,7 +206,11 @@ const EventOverlay = React.forwardRef<HTMLDivElement, EventOverlayProps>(
                 Toronnto, Canada
               </motion.p>
               <motion.button 
-                onClick={() => router.push(`/registration/${token}`)}
+                onClick={() => {
+                  const date = index === 0 ? 'March 27 2026' : 'March 26 2026';
+                  const day = index === 0 ? 'Friday' : 'Thursday';
+                  router.push(`/registration/${token}?date=${encodeURIComponent(date)}&day=${encodeURIComponent(day)}`);
+                }}
                 className="mt-6.5 flex items-center justify-center h-[59px] w-57 rounded-[50px] border border-white"
                 variants={buttonVariants}
                 whileHover={{ scale: 1.05 }}

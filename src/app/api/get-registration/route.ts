@@ -40,6 +40,8 @@ export async function GET(request: NextRequest) {
       office: registration.office || '',
       country: registration.country || '',
       numberOfChildren: registration.numberOfChildren || '',
+      date: registration.date || '',
+      day: registration.day || '',
     });
   } catch (error) {
     console.error('Error in get-registration:', error);

@@ -8,6 +8,8 @@ export interface IRegistration {
   office: string;
   country: string;
   numberOfChildren: string;
+  date: string;
+  day: string;
   submitted: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -44,6 +46,14 @@ const RegistrationSchema = new Schema<IRegistration>(
       default: '',
     },
     numberOfChildren: {
+      type: String,
+      default: '',
+    },
+    date: {
+      type: String,
+      default: '',
+    },
+    day: {
       type: String,
       default: '',
     },

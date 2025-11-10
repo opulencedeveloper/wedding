@@ -24,7 +24,9 @@ function generateMessageHostsLink(): string {
 export function getInvitationEmailTemplate(
   invitationLink: string,
   baseUrl: string,
-  recipientName?: string
+  recipientName?: string,
+  date?: string,
+  day?: string
 ): string {
   const coupleImageUrl = `${baseUrl}/assets/images/groom-kissing-bride.png`;
   const heroImageUrl = `${baseUrl}/assets/images/hero-img.png`;
@@ -32,6 +34,18 @@ export function getInvitationEmailTemplate(
   const calendarLink = generateCalendarLink();
   const directionsLink = generateDirectionsLink();
   const messageHostsLink = generateMessageHostsLink();
+  
+  // Wedding events - always show both
+  const traditionalWedding = {
+    name: 'Traditional wedding',
+    day: 'Thursday',
+    date: 'March 26 2026'
+  };
+  const whiteWedding = {
+    name: 'White wedding',
+    day: 'Friday',
+    date: 'March 27 2026'
+  };
 
   return `
 <!DOCTYPE html>
@@ -131,22 +145,78 @@ export function getInvitationEmailTemplate(
                 </tr>
               </table>
 
-              <!-- Date and Location -->
+              <!-- Wedding Events -->
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <!-- Traditional Wedding -->
                 <tr>
-                  <td align="center" style="padding-bottom: 18px;">
-                    <p style="margin: 0; font-family: Georgia, serif; font-size: 26px; color: #2c2416; font-weight: normal; letter-spacing: 2px;">
-                      Friday
-                    </p>
+                  <td align="center" style="padding-bottom: 30px;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 480px;">
+                      <tr>
+                        <td align="center" style="padding-bottom: 15px;">
+                          <p style="margin: 0; font-family: Georgia, serif; font-size: 24px; color: #2c2416; font-weight: normal; letter-spacing: 2px;">
+                            ${traditionalWedding.name}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" style="padding-bottom: 10px;">
+                          <p style="margin: 0; font-family: Georgia, serif; font-size: 22px; color: #2c2416; font-weight: normal; letter-spacing: 1.5px;">
+                            ${traditionalWedding.day}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" style="padding-bottom: 20px;">
+                          <p style="margin: 0; font-family: Georgia, serif; font-size: 32px; color: #d4af37; font-weight: normal; letter-spacing: 2px;">
+                            ${traditionalWedding.date}
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
+                
+                <!-- Elegant Gold Divider -->
                 <tr>
-                  <td align="center" style="padding-bottom: 12px;">
-                    <p style="margin: 0; font-family: Georgia, serif; font-size: 36px; color: #d4af37; font-weight: normal; letter-spacing: 3px;">
-                      March 27, 2026
-                    </p>
+                  <td align="center" style="padding-bottom: 30px;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="80">
+                      <tr>
+                        <td style="height: 1px; background: linear-gradient(90deg, transparent 0%, #d4af37 50%, transparent 100%);"></td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
+                
+                <!-- White Wedding -->
+                <tr>
+                  <td align="center" style="padding-bottom: 20px;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 480px;">
+                      <tr>
+                        <td align="center" style="padding-bottom: 15px;">
+                          <p style="margin: 0; font-family: Georgia, serif; font-size: 24px; color: #2c2416; font-weight: normal; letter-spacing: 2px;">
+                            ${whiteWedding.name}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" style="padding-bottom: 10px;">
+                          <p style="margin: 0; font-family: Georgia, serif; font-size: 22px; color: #2c2416; font-weight: normal; letter-spacing: 1.5px;">
+                            ${whiteWedding.day}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" style="padding-bottom: 20px;">
+                          <p style="margin: 0; font-family: Georgia, serif; font-size: 32px; color: #d4af37; font-weight: normal; letter-spacing: 2px;">
+                            ${whiteWedding.date}
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- Location -->
                 <tr>
                   <td align="center" style="padding-bottom: 45px;">
                     <p style="margin: 0; font-family: Georgia, serif; font-size: 21px; color: #8b7355; font-style: italic; letter-spacing: 1px;">

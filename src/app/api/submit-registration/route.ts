@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     await connectDB();
 
     const data = await request.json();
-    const { email, fullName, title, office, country, numberOfChildren } = data;
+    const { email, fullName, title, office, country, numberOfChildren, date, day } = data;
 
     if (!email || !email.includes('@')) {
       return NextResponse.json(
@@ -39,6 +39,8 @@ export async function POST(request: NextRequest) {
     existing.office = office || '';
     existing.country = country || '';
     existing.numberOfChildren = numberOfChildren || '';
+    existing.date = date || '';
+    existing.day = day || '';
     existing.submitted = true;
 
     await existing.save();

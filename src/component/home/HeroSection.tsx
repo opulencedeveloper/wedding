@@ -223,7 +223,11 @@ export default function HeroSection({ token = 'guest' }: HeroSectionProps) {
         </motion.p>
 
         <motion.button 
-          onClick={() => router.push(`/registration/${token}`)}
+          onClick={() => {
+            const date = 'March 27 2026';
+            const day = 'Friday';
+            router.push(`/registration/${token}?date=${encodeURIComponent(date)}&day=${encodeURIComponent(day)}`);
+          }}
           className="mt-6.5 flex items-center justify-center h-[59px] w-57 rounded-[50px] border border-white hover:bg-white/10 transition-colors duration-300"
           variants={buttonVariants}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.6 }}
