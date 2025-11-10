@@ -28,6 +28,7 @@ export function getInvitationEmailTemplate(
 ): string {
   const coupleImageUrl = `${baseUrl}/assets/images/groom-kissing-bride.png`;
   const heroImageUrl = `${baseUrl}/assets/images/hero-img.png`;
+  const gifUrl = `${baseUrl}/assets/gif/email-gf.gif`;
   const calendarLink = generateCalendarLink();
   const directionsLink = generateDirectionsLink();
   const messageHostsLink = generateMessageHostsLink();
@@ -117,6 +118,15 @@ export function getInvitationEmailTemplate(
                       You are cordially invited to celebrate<br>
                       our special day
                     </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- GIF Section -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td align="center" style="padding-bottom: 45px;">
+                    <img src="${gifUrl}" alt="Wedding Celebration" width="520" height="auto" style="display: block; max-width: 520px; width: 100%; height: auto; border-radius: 4px;" />
                   </td>
                 </tr>
               </table>
